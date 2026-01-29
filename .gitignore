@@ -1,0 +1,57 @@
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.lock
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Python
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.toast
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+backend/venv/
+backend/.venv/
+
+# Node / Next.js
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+out/
+build/
+dist/
+.npm
+*-debug.log*
+
+# Environment Secrets (CRITICAL)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# App Specific Cache
+G:/huggingface_cache/
+hf_cache/
+.cache/

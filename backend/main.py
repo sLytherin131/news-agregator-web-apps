@@ -1,0 +1,28 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from routers import news, users
+import os
+os.environ["HF_HOME"] = "G:/huggingface_cache"
+
+app = FastAPI(title="Diberita API", description="Backend for News Bias Detection")
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # Adjust in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include routers
+app.include_router(news.router)
+app.include_router(users.router)
+
+@app.get("/")
+async def root():
+    return {"message": "Diberita API is running"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
