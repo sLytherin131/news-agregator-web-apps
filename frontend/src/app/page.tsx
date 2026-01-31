@@ -96,7 +96,7 @@ export default function HomePage() {
         borderBottom: '1px solid var(--border)',
         paddingBottom: '3rem'
       }}>
-        <h1 style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-0.03em' }}>
+        <h1 className="hero-title">
           Uncover the <span style={{ color: 'var(--primary)' }}>Truth</span>
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '650px', margin: '0 auto' }}>
@@ -110,13 +110,7 @@ export default function HomePage() {
         </div>
       ) : (
         <>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 380px',
-            gap: '3.5rem',
-            alignItems: 'stretch', // Use stretch to help with height alignment
-            marginBottom: '4rem'
-          }}>
+          <div className="responsive-grid-home">
             {/* LEFT COLUMN: HOT ISSUES */}
             <section style={{ display: 'flex', flexDirection: 'column' }}>
               <h2 style={{
@@ -214,7 +208,7 @@ export default function HomePage() {
             </section>
 
             {/* RIGHT COLUMN: LATEST ISSUES */}
-            <aside style={{ borderLeft: '1px solid var(--border)', paddingLeft: '3.5rem', display: 'flex', flexDirection: 'column' }}>
+            <aside className="home-aside">
               <h2 style={{
                 fontSize: '1.5rem',
                 marginBottom: '2rem',

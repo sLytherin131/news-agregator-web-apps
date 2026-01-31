@@ -276,27 +276,15 @@ export default function PublicIssueDetail() {
             }}>
                 <div className="container">
 
-                    <h1 style={{
-                        fontSize: '3rem',
-                        fontWeight: 900,
-                        marginBottom: '1rem',
-                        lineHeight: 1.1,
-                        letterSpacing: '-0.02em',
-                        background: 'linear-gradient(to right, var(--text), var(--text-muted))',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        maxWidth: '900px'
-                    }}>
+                    <h1 className="issue-title">
                         {issue.title}
                     </h1>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                        <div style={{ display: 'flex', gap: '1rem', color: 'var(--text-muted)', fontSize: '0.9rem', alignItems: 'center' }}>
-                            <span>Published at {new Date(issue.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-                            <span>•</span>
-                            <span>{issue.view_count || 0} views</span>
-                            <span>•</span>
-                            <span>{relatedNews.length} related news</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+                        <div className="issue-meta">
+                            <span className="meta-item">Published at {new Date(issue.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            <span className="meta-item">{issue.view_count || 0} views</span>
+                            <span className="meta-item">{relatedNews.length} related news</span>
                         </div>
                         <div style={{ display: 'flex', gap: '0.75rem', position: 'relative' }}>
                             {copied && (
@@ -376,12 +364,8 @@ export default function PublicIssueDetail() {
 
             <div className="container" style={{ marginTop: '1.5rem' }}>
                 {/* Summary Navigation Tabs */}
-                <div style={{
-                    display: 'flex',
-                    gap: '0.75rem',
-                    marginBottom: '1.5rem',
-                    alignItems: 'center',
-                    flexWrap: 'wrap'
+                <div className="mobile-scroll-container" style={{
+                    marginBottom: '1.5rem'
                 }}>
                     {/* Segmented Group for Labels */}
                     <div className="glass" style={{
@@ -453,10 +437,10 @@ export default function PublicIssueDetail() {
                     </button>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '3rem', marginBottom: '4rem' }}>
+                <div className="responsive-grid-issue">
                     {/* AI Analysis Section */}
                     <main>
-                        <section className="glass" style={{ padding: '2.5rem', marginBottom: '3rem' }}>
+                        <section className="glass glass-content" style={{ marginBottom: '3rem' }}>
                             {/* Content based on active tab with custom spacing */}
                             {(() => {
                                 const content = activeTab === 'all' ? issue.summarize_all :
@@ -601,8 +585,8 @@ export default function PublicIssueDetail() {
                     </main>
 
                     {/* Sidebar Analytics */}
-                    <aside style={{ borderLeft: '1px solid var(--border)', paddingLeft: '3rem' }}>
-                        <div className="glass" style={{ padding: '1.5rem' }}>
+                    <aside className="home-aside">
+                        <div className="glass glass-content">
                             <h2 style={{ fontSize: '1.1rem', marginBottom: '1rem', fontWeight: 800 }}>Issue Details</h2>
 
                             <div style={{ display: 'grid', gap: '0.75rem' }}>
@@ -660,19 +644,11 @@ export default function PublicIssueDetail() {
                         </div>
 
                         {/* Media Bias Analysis Grid - New Section */}
-                        <div className="glass" style={{ padding: '1.5rem', marginTop: '1.5rem' }}>
+                        <div className="glass glass-content" style={{ marginTop: '1.5rem' }}>
                             <h2 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', fontWeight: 800 }}>Media Bias Distribution</h2>
 
                             {/* 7-Bar Spectrum UI */}
-                            <div style={{
-                                display: 'flex',
-                                gap: '4px',
-                                height: '280px',
-                                alignItems: 'flex-end',
-                                paddingBottom: '2.5rem',
-                                position: 'relative',
-                                marginBottom: '1rem'
-                            }}>
+                            <div className="bias-chart-container">
                                 {mediaSpectrum.map((medias, idx) => (
                                     <div
                                         key={idx}

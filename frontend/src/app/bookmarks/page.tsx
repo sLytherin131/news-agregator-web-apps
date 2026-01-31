@@ -185,15 +185,7 @@ export default function BookmarksPage() {
                 <div style={{ display: 'grid', gap: '1.5rem', maxWidth: '900px', margin: '0 auto' }}>
                     {bookmarkedIssues.map((issue) => (
                         <Link key={issue.id} href={`/issues/${issue.id}`} style={{ textDecoration: 'none' }}>
-                            <article className="glass card-hover" style={{
-                                padding: '1.5rem',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                border: '1px solid var(--border)',
-                                display: 'flex',
-                                gap: '1.5rem',
-                                alignItems: 'center'
-                            }}>
+                            <article className="glass card-hover responsive-bookmark-card">
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                     <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -243,14 +235,7 @@ export default function BookmarksPage() {
                                 </div>
 
                                 {issue.representative_image && (
-                                    <div style={{
-                                        width: '180px',
-                                        height: '120px',
-                                        flexShrink: 0,
-                                        borderRadius: '0.75rem',
-                                        overflow: 'hidden',
-                                        border: '1px solid var(--border)'
-                                    }}>
+                                    <div className="bookmark-image-container">
                                         <img
                                             src={issue.representative_image}
                                             alt={issue.title}

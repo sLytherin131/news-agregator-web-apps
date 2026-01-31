@@ -298,3 +298,234 @@ a {
   color: var(--text);
   font-weight: 500;
 }
+
+/* --- RESPONSIVE UTILITIES by Antigravity --- */
+
+.responsive-grid-home {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 3.5rem;
+  align-items: stretch;
+  margin-bottom: 4rem;
+}
+
+/* Issue Detail Page Grid */
+.responsive-grid-issue {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+/* Hero Title Helper */
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* Mobile Breakpoints */
+
+@media (max-width: 1024px) {
+  .responsive-grid-home {
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+  }
+
+  .responsive-grid-issue {
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 868px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .responsive-grid-home {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .responsive-grid-issue {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  /* Make sidebar (right column) come after main content in order, or handle via flex order if needed.
+     Default grid order is fine (Main then Sidebar) */
+
+  .navbar {
+    height: 70px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .form-container {
+    margin: 2rem auto;
+    padding: 1.5rem;
+  }
+
+  /* Adjust article heights or layouts if needed */
+  .responsive-grid-home {
+    gap: 2rem;
+  }
+}
+
+.home-aside {
+  border-left: 1px solid var(--border);
+  padding-left: 3.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 868px) {
+  .home-aside {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 2rem;
+  }
+}
+
+.issue-title {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, var(--text), var(--text-muted));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  max-width: 900px;
+}
+
+@media (max-width: 768px) {
+  .issue-title {
+    font-size: 2rem;
+  }
+}
+
+/* Issue Detail Mobile Refinements */
+.glass-content {
+  padding: 2.5rem;
+}
+
+.mobile-scroll-container {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.bias-chart-container {
+  display: flex;
+  gap: 4px;
+  height: 280px;
+  align-items: flex-end;
+  padding-bottom: 2.5rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+  .glass-content {
+    padding: 1.25rem;
+  }
+
+  .mobile-scroll-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    width: 100%;
+    /* Hide scrollbar for cleaner look but keep functionality */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .mobile-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-scroll-container button {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+/* Issue Meta (Date, Views, Count) */
+.issue-meta {
+  display: flex;
+  gap: 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Use pseudo-elements for separators to handle wrapping gracefully */
+.issue-meta span.meta-item:not(:last-child)::after {
+  content: "•";
+  margin-left: 1rem;
+  opacity: 0.5;
+}
+
+@media (max-width: 640px) {
+  .issue-meta {
+    gap: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Bookmark Card Responsive */
+.responsive-bookmark-card {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.bookmark-image-container {
+  width: 180px;
+  height: 120px;
+  flex-shrink: 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+@media (max-width: 640px) {
+  .responsive-bookmark-card {
+    flex-direction: column-reverse;
+    /* Text first? No let's try standard column */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .bookmark-image-container {
+    width: 100%;
+    height: 180px;
+    order: -1;
+    /* Image on top */
+  }
+}
