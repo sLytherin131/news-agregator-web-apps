@@ -43,11 +43,19 @@ class NewsUpdate(BaseModel):
     published_at: Optional[datetime] = None
     label: Optional[str] = None
 
-from typing import Optional, Union
+from typing import Optional, Union, List
 
 class NewsResponse(NewsBase):
     id: Union[str, int]
     created_at: datetime
+    # Add hidden field for issues if needed, or handle in a separate model
+    issues: Optional[List[dict]] = None 
 
     class Config:
         from_attributes = True
+
+class ClusteringRequest(BaseModel):
+    news_ids: List[int]
+
+class ClusteringResponse(BaseModel):
+    results: List[dict]

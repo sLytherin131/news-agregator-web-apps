@@ -1,14 +1,50 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Query
 from typing import List, Optional, Union
-from models.news import NewsCreateManual, NewsCreateAuto, NewsInsertManual, NewsUpdate, NewsResponse
+from models.news import NewsCreateManual, NewsCreateAuto, NewsInsertManual, NewsUpdate, NewsResponse, ClusteringRequest, ClusteringResponse
 from db.supabase import supabase
 from services.scraping import scrape_news
 from services.classification import classify_content
+from services.clustering import cluster_news_items
+from services.summarization import process_issue_summarization
 from datetime import datetime, timezone
 import uuid
 import traceback
 
+NEWS_NOT_FOUND = "News article not found"
+
 router = APIRouter(prefix="/news", tags=["news"])
+
+@router.post("/bulk-cluster", response_model=ClusteringResponse)
+async def bulk_cluster(data: ClusteringRequest):
+    try:
+        results = cluster_news_items(data.news_ids)
+        
+        # Identify which issues were touched and trigger summarization for them
+        issue_ids = set()
+        for r in results:
+            issue_ids.add(r["issue_id"])
+            
+        for issue_id in issue_ids:
+            try:
+                await process_issue_summarization(issue_id)
+            except Exception as e:
+                print(f"Auto-Summarization Error for Issue {issue_id}: {str(e)}")
+                
+        return {"results": results}
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Clustering Error: {str(e)}")
+
+@router.post("/issues/{issue_id}/summarize")
+async def summarize_issue(issue_id: int):
+    try:
+        result = await process_issue_summarization(issue_id)
+        if not result:
+            raise HTTPException(status_code=404, detail="Issue not found or has no news")
+        return {"status": "success", "data": result}
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Summarization Error: {str(e)}")
 
 @router.post("/manual", response_model=NewsResponse)
 async def create_news_manual(
@@ -74,9 +110,11 @@ async def create_news_auto(data: NewsCreateAuto):
 async def list_news(
     source: Optional[str] = None,
     label: Optional[str] = None,
-    classified: Optional[bool] = None
+    classified: Optional[bool] = None,
+    clustered: Optional[bool] = None
 ):
-    query = supabase.table("news").select("*")
+    # Fetch news with linked issues titles
+    query = supabase.table("news").select("*, issues:news_issues(issue:issues(title))")
     
     if source:
         query = query.eq("source", source)
@@ -89,7 +127,16 @@ async def list_news(
             query = query.is_("label", "null")
             
     res = query.order("created_at", desc=True).execute()
-    return res.data
+    data = res.data
+    
+    # Post-filtering for clustered if needed
+    if clustered is not None:
+        if clustered:
+            data = [n for n in data if n.get("issues") and len(n["issues"]) > 0]
+        else:
+            data = [n for n in data if not n.get("issues") or len(n["issues"]) == 0]
+            
+    return data
 
 @router.get("/{news_id}", response_model=NewsResponse)
 async def get_news(news_id: Union[str, int]):
@@ -103,6 +150,11 @@ async def update_news(news_id: Union[str, int], data: NewsUpdate):
     import json
     # Use Pydantic's JSON serialization then parse back to dict to ensure all types (datetime, etc) are strings
     update_data = json.loads(data.model_dump_json(exclude_unset=True))
+    
+    # Convert empty string label to None to avoid constraint violation "news_label_check"
+    if "label" in update_data and update_data["label"] == "":
+        update_data["label"] = None
+        
     res = supabase.table("news").update(update_data).eq("id", news_id).execute()
     if not res.data:
         raise HTTPException(status_code=404, detail=NEWS_NOT_FOUND)

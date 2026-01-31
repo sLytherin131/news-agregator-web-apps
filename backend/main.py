@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import news, users
+from routers import news, users, issues, bookmarks, reading_history
 import os
 os.environ["HF_HOME"] = "G:/huggingface_cache"
 
@@ -18,6 +18,9 @@ app.add_middleware(
 # Include routers
 app.include_router(news.router)
 app.include_router(users.router)
+app.include_router(issues.router)
+app.include_router(bookmarks.router)
+app.include_router(reading_history.router)
 
 @app.get("/")
 async def root():

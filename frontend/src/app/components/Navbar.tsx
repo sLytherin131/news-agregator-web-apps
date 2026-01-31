@@ -73,7 +73,6 @@ export default function Navbar() {
                         ) : (
                             <>
                                 <Link href="/login" className="nav-link">Login</Link>
-                                <Link href="/register" className="nav-link">Register</Link>
                             </>
                         )}
                     </div>
@@ -96,7 +95,11 @@ export default function Navbar() {
                 <div className="sidebar-content">
                     <Link href="/" onClick={() => setIsSidebarOpen(false)} className="nav-link">Home</Link>
                     {user && (
-                        <Link href="/profile" onClick={() => setIsSidebarOpen(false)} className="nav-link">Profile</Link>
+                        <>
+                            <Link href="/profile" onClick={() => setIsSidebarOpen(false)} className="nav-link">Profile</Link>
+                            <Link href="/bookmarks" onClick={() => setIsSidebarOpen(false)} className="nav-link">Bookmarks</Link>
+                            <Link href="/history" onClick={() => setIsSidebarOpen(false)} className="nav-link">History</Link>
+                        </>
                     )}
 
                     {user?.role === 'admin' && (
@@ -111,8 +114,20 @@ export default function Navbar() {
 
                     <div className="theme-section">
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Themes</p>
-                        <button className="theme-toggle" onClick={toggleTheme}>
-                            {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
+                        <button className="theme-toggle" onClick={toggleTheme} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <img
+                                src={theme === 'dark'
+                                    ? 'https://img.icons8.com/?size=100&id=GIywaBFJCJiI&format=png&color=000000'
+                                    : 'https://img.icons8.com/?size=100&id=FwypVM1CXDbT&format=png&color=000000'
+                                }
+                                alt={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                                style={{
+                                    width: '20px',
+                                    height: '20px',
+                                    filter: theme === 'dark' ? 'invert(1) brightness(10)' : 'none'
+                                }}
+                            />
+                            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                         </button>
                     </div>
                 </div>

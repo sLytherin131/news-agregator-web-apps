@@ -21,6 +21,7 @@ export default function AdminNewsList() {
     const [filterSource, setFilterSource] = useState('');
     const [filterLabel, setFilterLabel] = useState('');
     const [filterStatus, setFilterStatus] = useState(''); // 'classified' | 'unclassified'
+    const [filterClustered, setFilterClustered] = useState(''); // 'clustered' | 'unclustered'
 
     useEffect(() => {
         fetchNews();
@@ -28,7 +29,7 @@ export default function AdminNewsList() {
 
     useEffect(() => {
         applyFilters();
-    }, [news, filterSource, filterLabel, filterStatus]);
+    }, [news, filterSource, filterLabel, filterStatus, filterClustered]);
 
     const fetchNews = async () => {
         try {
@@ -56,6 +57,12 @@ export default function AdminNewsList() {
             result = result.filter(item => !!item.label);
         } else if (filterStatus === 'unclassified') {
             result = result.filter(item => !item.label);
+        }
+
+        if (filterClustered === 'clustered') {
+            result = result.filter(item => item.issues && item.issues.length > 0);
+        } else if (filterClustered === 'unclustered') {
+            result = result.filter(item => !item.issues || item.issues.length === 0);
         }
 
         setFilteredNews(result);
@@ -146,7 +153,39 @@ export default function AdminNewsList() {
         });
     };
 
+    const handleBulkCluster = async () => {
+        if (selectedIds.length === 0) return;
+
+        const alreadyClustered = filteredNews.filter(n => selectedIds.includes(n.id.toString()) && n.issues && n.issues.length > 0);
+        if (alreadyClustered.length > 0) {
+            alert(`Peringatan: Ada ${alreadyClustered.length} berita yang sudah masuk ke isu terpilih. Tombol ini hanya berlaku untuk berita UNCLUSTERED.`);
+            return;
+        }
+
+        setActionLoading(true);
+        try {
+            const res = await apiRequest('/news/bulk-cluster', {
+                method: 'POST',
+                body: JSON.stringify({ news_ids: selectedIds.map(id => Number.parseInt(id)) })
+            });
+
+            // Re-fetch to get updated clustering status and issue titles
+            await fetchNews();
+            setSelectedIds([]);
+            setMessage({
+                type: 'success',
+                text: `Bulk Clustering berhasil: ${res.results.length} berita telah diproses ke Isu.`
+            });
+        } catch (err: any) {
+            setMessage({ type: 'error', text: `Clustering Gagal: ${err.message}` });
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
     const hasClassifiedSelected = filteredNews.some(n => selectedIds.includes(n.id.toString()) && n.label);
+    const hasClusteredSelected = filteredNews.some(n => selectedIds.includes(n.id.toString()) && n.issues && n.issues.length > 0);
+    const hasUnclassifiedSelected = filteredNews.some(n => selectedIds.includes(n.id.toString()) && !n.label);
 
     return (
         <div className="container" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
@@ -162,21 +201,37 @@ export default function AdminNewsList() {
 
                 {selectedIds.length > 0 && (
                     <div style={{ display: 'flex', gap: '0.75rem', paddingBottom: '0.5rem' }}>
-                        <button
-                            onClick={handleBulkClassify}
-                            disabled={actionLoading || hasClassifiedSelected}
-                            className="btn btn-primary"
-                            style={{
-                                padding: '0.5rem 1rem',
-                                width: 'auto',
-                                fontSize: '0.85rem',
-                                opacity: hasClassifiedSelected ? 0.3 : 1,
-                                cursor: hasClassifiedSelected ? 'not-allowed' : 'pointer'
-                            }}
-                            title={hasClassifiedSelected ? "Beberapa berita terpilih sudah diklasifikasi" : "Klasifikasi massal berita terpilih"}
-                        >
-                            {actionLoading ? '⏳...' : '✨ Bulk Classify'}
-                        </button>
+                        {!hasClassifiedSelected && (
+                            <button
+                                onClick={handleBulkClassify}
+                                disabled={actionLoading}
+                                className="btn btn-primary"
+                                style={{
+                                    padding: '0.5rem 1rem',
+                                    width: 'auto',
+                                    fontSize: '0.85rem',
+                                }}
+                                title="Klasifikasi massal berita terpilih"
+                            >
+                                {actionLoading ? '⏳...' : '✨ Bulk Classify'}
+                            </button>
+                        )}
+                        {!hasClusteredSelected && !hasUnclassifiedSelected && (
+                            <button
+                                onClick={handleBulkCluster}
+                                disabled={actionLoading}
+                                className="btn btn-primary"
+                                style={{
+                                    padding: '0.5rem 1rem',
+                                    width: 'auto',
+                                    fontSize: '0.85rem',
+                                    backgroundColor: 'var(--success)'
+                                }}
+                                title="Hubungkan berita terpilih ke Isu (Clustering)"
+                            >
+                                {actionLoading ? '⏳...' : '⛓️ Bulk Clustering'}
+                            </button>
+                        )}
                         <button
                             onClick={handleBulkDelete}
                             disabled={actionLoading}
@@ -216,30 +271,38 @@ export default function AdminNewsList() {
 
             {/* Filter Bar */}
             <div className="glass" style={{ padding: '1.5rem', marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'flex-end' }}>
-                <div style={{ flex: 1, minWidth: '200px' }}>
+                <div style={{ flex: 1, minWidth: '150px' }}>
                     <label htmlFor="filter-source" style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: '0.5rem', color: 'var(--text)' }}>Source</label>
                     <select id="filter-source" value={filterSource} onChange={e => setFilterSource(e.target.value)} style={{ width: '100%', padding: '0.6rem', backgroundColor: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: '0.4rem', color: 'var(--text)' }}>
                         <option value="">All Sources</option>
                         {SOURCES.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                 </div>
-                <div style={{ flex: 1, minWidth: '200px' }}>
+                <div style={{ flex: 1, minWidth: '150px' }}>
                     <label htmlFor="filter-label" style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: '0.5rem', color: 'var(--text)' }}>Label</label>
                     <select id="filter-label" value={filterLabel} onChange={e => setFilterLabel(e.target.value)} style={{ width: '100%', padding: '0.6rem', backgroundColor: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: '0.4rem', color: 'var(--text)' }}>
                         <option value="">All Labels</option>
                         {LABELS.map(l => <option key={l} value={l}>{l.toUpperCase()}</option>)}
                     </select>
                 </div>
-                <div style={{ flex: 1, minWidth: '200px' }}>
-                    <label htmlFor="filter-status" style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: '0.5rem', color: 'var(--text)' }}>Status</label>
+                <div style={{ flex: 1, minWidth: '150px' }}>
+                    <label htmlFor="filter-status" style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: '0.5rem', color: 'var(--text)' }}>Classification</label>
                     <select id="filter-status" value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ width: '100%', padding: '0.6rem', backgroundColor: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: '0.4rem', color: 'var(--text)' }}>
                         <option value="">All Status</option>
                         <option value="classified">Classified</option>
                         <option value="unclassified">Unclassified</option>
                     </select>
                 </div>
+                <div style={{ flex: 1, minWidth: '150px' }}>
+                    <label htmlFor="filter-clustering" style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: '0.5rem', color: 'var(--text)' }}>Clustering</label>
+                    <select id="filter-clustering" value={filterClustered} onChange={e => setFilterClustered(e.target.value)} style={{ width: '100%', padding: '0.6rem', backgroundColor: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: '0.4rem', color: 'var(--text)' }}>
+                        <option value="">All Status</option>
+                        <option value="clustered">Clustered</option>
+                        <option value="unclustered">Unclustered</option>
+                    </select>
+                </div>
                 <button
-                    onClick={() => { setFilterSource(''); setFilterLabel(''); setFilterStatus(''); setSelectedIds([]); }}
+                    onClick={() => { setFilterSource(''); setFilterLabel(''); setFilterStatus(''); setFilterClustered(''); setSelectedIds([]); }}
                     className="btn btn-primary"
                     style={{ padding: '0.6rem 1.5rem', width: 'auto', fontSize: '0.9rem' }}
                 >
@@ -303,6 +366,11 @@ export default function AdminNewsList() {
                                     <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                                         <span>{item.source}</span>
                                         <span>{new Date(item.published_at).toLocaleDateString()}</span>
+                                        {item.issues?.length > 0 && (
+                                            <span style={{ color: 'var(--success)', fontWeight: 600 }}>
+                                                📌 {item.issues[0].issue.title}
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>

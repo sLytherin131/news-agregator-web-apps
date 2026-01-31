@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { apiRequest } from '../lib/api';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Footer from '../components/Footer';
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -59,14 +60,15 @@ export default function LoginPage() {
                         />
                     </div>
                     <button className="btn btn-primary" type="submit" disabled={loading}>
-                        {loading ? 'Signing in...' : 'Sign In'}
+                        {loading ? 'Logging in...' : 'Login'}
                     </button>
                 </form>
 
                 <p style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                    Don't have an account? <Link href="/register" style={{ color: 'var(--primary)' }}>Register</Link>
+                    Don't have an account? <Link href="/register" style={{ color: 'var(--primary)' }}>Create account</Link>
                 </p>
             </div>
+            <Footer />
         </div>
     );
 }

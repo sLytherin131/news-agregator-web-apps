@@ -3,8 +3,11 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 
 export const metadata: Metadata = {
-  title: "DiBalikBerita - Bias Detection",
+  title: "DibalikBerita",
   description: "Detecting news bias with AI",
+  icons: {
+    icon: "/db_logo.jpg",
+  },
 };
 
 export default function RootLayout({
@@ -14,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body suppressHydrationWarning>
         <Navbar />
         <main>{children}</main>
       </body>

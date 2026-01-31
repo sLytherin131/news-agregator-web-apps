@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { apiRequest } from '../lib/api';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Footer from '../components/Footer';
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({ email: '', password: '', full_name: '' });
@@ -42,7 +43,7 @@ export default function RegisterPage() {
                         <input
                             type="text"
                             required
-                            placeholder="John Doe"
+                            placeholder="Your Name"
                             onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                         />
                     </div>
@@ -70,9 +71,10 @@ export default function RegisterPage() {
                 </form>
 
                 <p style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                    Already have an account? <Link href="/login" style={{ color: 'var(--primary)' }}>Sign In</Link>
+                    Already have an account? <Link href="/login" style={{ color: 'var(--primary)' }}>Login</Link>
                 </p>
             </div>
+            <Footer />
         </div>
     );
 }

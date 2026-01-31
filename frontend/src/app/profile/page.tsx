@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { apiRequest } from '../lib/api';
 import { useRouter } from 'next/navigation';
+import Footer from '../components/Footer';
 
 export default function ProfilePage() {
     const [user, setUser] = useState<any>(null);
@@ -78,7 +79,7 @@ export default function ProfilePage() {
 
     return (
         <div className="container" style={{ padding: '2rem 1.5rem 4rem' }}>
-            <div className="glass form-container" style={{ margin: '0 auto', maxWidth: '500px' }}>
+            <div className="glass form-container" style={{ margin: '0 auto 2rem', maxWidth: '500px' }}>
                 <h1 className="form-title">Your Profile</h1>
                 <p className="form-subtitle">Update your personal information</p>
 
@@ -135,10 +136,11 @@ export default function ProfilePage() {
                     </div>
 
                     <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '1rem' }}>
-                        {loading ? 'Saving Changes...' : 'Save Changes'}
+                        {loading ? 'Saving Changes...' : 'Save'}
                     </button>
                 </form>
             </div>
+            <Footer />
         </div>
     );
 }
