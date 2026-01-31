@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import news, users, issues, bookmarks, reading_history
 import os
-os.environ["HF_HOME"] = "G:/huggingface_cache"
+# os.environ["HF_HOME"] = "G:/huggingface_cache" # Removed for production
 
 app = FastAPI(title="Diberita API", description="Backend for News Bias Detection")
 
@@ -28,4 +28,5 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
