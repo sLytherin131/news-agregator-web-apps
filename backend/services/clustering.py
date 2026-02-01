@@ -8,7 +8,7 @@ import torch
 # Using MiniLM model which is much lighter (approx 420MB) and handles multilingual text well
 model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 
-SIMILARITY_THRESHOLD = 0.55
+SIMILARITY_THRESHOLD = 0.65
 
 def get_embedding(text: str) -> List[float]:
     """Generates embedding for a given text."""
@@ -89,7 +89,7 @@ def _process_single_item(item: dict, existing_issues: List[dict]):
             embedding = None
             
     if not embedding:
-        text_to_embed = f"{item['title']} {item['content'][:200]}"
+        text_to_embed = f"{item['title']} {item['content'][:450]}"
         embedding = get_embedding(text_to_embed)
         supabase.table("news").update({"embedding": embedding}).eq("id", item["id"]).execute()
     
