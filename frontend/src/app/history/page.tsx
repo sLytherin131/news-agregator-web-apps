@@ -200,11 +200,11 @@ export default function HistoryPage() {
                                             alignSelf: 'flex-start',
                                             padding: '0.2rem 0.6rem',
                                             borderRadius: '0.4rem',
-                                            background: news.label === 'oposisi' ? 'rgba(255, 61, 113, 0.1)' :
-                                                news.label === 'pro_pemerintah' ? 'rgba(46, 204, 113, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+                                            background: news.label === 'oposisi' ? 'rgba(233, 30, 99, 0.1)' :
+                                                news.label === 'pro_pemerintah' ? 'rgba(42, 157, 143, 0.1)' : 'rgba(255, 255, 255, 0.05)',
                                             border: '1px solid var(--border)',
-                                            color: news.label === 'oposisi' ? '#FF3D71' :
-                                                news.label === 'pro_pemerintah' ? '#2ECC71' : 'var(--text-muted)',
+                                            color: news.label === 'oposisi' ? '#e91e63' :
+                                                news.label === 'pro_pemerintah' ? '#2a9d8f' : 'var(--text-muted)',
                                             fontSize: '0.65rem',
                                             fontWeight: 800,
                                             textTransform: 'uppercase'

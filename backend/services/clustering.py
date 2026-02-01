@@ -5,12 +5,10 @@ from typing import List, Optional
 import torch
 
 # Load model once at module level
-# Using mpnet model which produces 768-dimensional embeddings (matches Supabase vector config)
-model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-mpnet-base-v2")
+# Using MiniLM model which is much lighter (approx 420MB) and handles multilingual text well
+model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 
-# Lower threshold for better grouping (0.60 = 60% similarity)
-# You can adjust this: lower = more grouping, higher = stricter matching
-SIMILARITY_THRESHOLD = 0.40
+SIMILARITY_THRESHOLD = 0.55
 
 def get_embedding(text: str) -> List[float]:
     """Generates embedding for a given text."""

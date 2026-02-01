@@ -326,6 +326,41 @@ a {
   line-height: 1.1;
 }
 
+.sub-hero-text {
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+
+.static-content p {
+  line-height: 1.8;
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+
+.footer-logo {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
 /* Mobile Breakpoints */
 
 @media (max-width: 1024px) {
@@ -365,15 +400,33 @@ a {
   .hero-title {
     font-size: 2.5rem;
   }
+
+  .sub-hero-text {
+    font-size: 1.1rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .static-content p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .footer-links {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 480px) {
-  .container {
-    padding: 0 1rem;
-  }
-
   .hero-title {
     font-size: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
   }
 
   .form-container {

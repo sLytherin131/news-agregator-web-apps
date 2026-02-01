@@ -252,7 +252,7 @@ export default function PublicIssueDetail() {
     if (loading) return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <div className="container" style={{ padding: '8rem 2rem', textAlign: 'center', flex: 1 }}>
-                <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>Menganalisis sudut pandang...</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>Analyzing perspectives...</p>
             </div>
             <Footer />
         </div>
@@ -562,11 +562,11 @@ export default function PublicIssueDetail() {
                                                         <span style={{
                                                             padding: '0.15rem 0.5rem',
                                                             borderRadius: '0.3rem',
-                                                            background: n.label === 'oposisi' ? 'rgba(255, 61, 113, 0.1)' :
-                                                                n.label === 'pro_pemerintah' ? 'rgba(46, 204, 113, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+                                                            background: n.label === 'oposisi' ? 'rgba(233, 30, 99, 0.1)' :
+                                                                n.label === 'pro_pemerintah' ? 'rgba(42, 157, 143, 0.1)' : 'rgba(255, 255, 255, 0.05)',
                                                             border: '1px solid var(--border)',
-                                                            color: n.label === 'oposisi' ? '#FF3D71' :
-                                                                n.label === 'pro_pemerintah' ? '#2ECC71' : 'var(--text-muted)',
+                                                            color: n.label === 'oposisi' ? '#e91e63' :
+                                                                n.label === 'pro_pemerintah' ? '#2a9d8f' : 'var(--text-muted)',
                                                             fontSize: '0.55rem',
                                                             fontWeight: 800,
                                                             textTransform: 'uppercase',

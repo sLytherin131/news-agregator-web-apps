@@ -17,7 +17,7 @@ export default function HomePage() {
       try {
         const [hot, latest, random] = await Promise.all([
           apiRequest('/issues/hot?limit=5'),
-          apiRequest('/issues/latest?limit=10'),
+          apiRequest('/issues/latest?limit=7'),
           apiRequest('/issues/random?limit=50')
         ]);
         setHotIssues(hot);
@@ -45,7 +45,7 @@ export default function HomePage() {
   };
 
   // Helper for distribution bar
-  const renderDistributionBar = (counts: any, total: number, showDominance = false) => {
+  const renderDistributionBar = (counts: any, total: number, showDominance = false, larger = false) => {
     if (!counts || total === 0) return null;
     const oppPercent = (counts.opposition / total) * 100;
     const neuPercent = (counts.neutral / total) * 100;
@@ -69,14 +69,47 @@ export default function HomePage() {
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
         <div style={{
           display: 'flex',
-          height: '6px',
-          width: '70px', // Slightly narrower for sidebar
+          height: larger ? '12px' : '6px',
+          width: larger ? '100px' : '70px', // Thicker and wider if larger
           overflow: 'hidden',
           background: 'rgba(255,255,255,0.1)'
         }}>
-          <div style={{ width: `${oppPercent}%`, background: '#e91e63' }} title="Opposition" />
-          <div style={{ width: `${neuPercent}%`, background: '#FFFFFF' }} title="Neutral" />
-          <div style={{ width: `${proPercent}%`, background: '#2a9d8f' }} title="Pro Government" />
+          <div style={{
+            width: `${oppPercent}%`,
+            background: '#e91e63',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '8px',
+            fontWeight: 900,
+            color: '#fff'
+          }} title="Opposition">
+            {larger && oppPercent > 15 ? 'O' : ''}
+          </div>
+          <div style={{
+            width: `${neuPercent}%`,
+            background: '#FFFFFF',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '8px',
+            fontWeight: 900,
+            color: '#000'
+          }} title="Neutral">
+            {larger && neuPercent > 15 ? 'N' : ''}
+          </div>
+          <div style={{
+            width: `${proPercent}%`,
+            background: '#2a9d8f',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '8px',
+            fontWeight: 900,
+            color: '#fff'
+          }} title="Pro Government">
+            {larger && proPercent > 15 ? 'P' : ''}
+          </div>
         </div>
         <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{total} sources</span>
         {showDominance && (
@@ -159,7 +192,7 @@ export default function HomePage() {
                           <span>{featuredIssue.view_count || 0} views</span>
                           <span>{formatDate(featuredIssue.created_at)}</span>
                         </div>
-                        {renderDistributionBar(featuredIssue.label_counts, featuredIssue.news_count)}
+                        {renderDistributionBar(featuredIssue.label_counts, featuredIssue.news_count, false, true)}
                       </div>
                       <span style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '0.85rem' }}>Read</span>
                     </div>
@@ -268,7 +301,7 @@ export default function HomePage() {
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                           {formatDate(item.created_at)}
                         </span>
-                        {renderDistributionBar(item.label_counts, item.news_count)}
+                        {renderDistributionBar(item.label_counts, item.news_count, false, true)}
                       </div>
                       <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1.5rem', lineHeight: '1.4', flex: 1 }}>{item.title}</h3>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
