@@ -5,8 +5,7 @@ from typing import List, Optional
 import torch
 
 # Load model once at module level
-# Using MiniLM model which is much lighter (approx 420MB) and handles multilingual text well
-model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-mpnet-base-v2")
 
 SIMILARITY_THRESHOLD = 0.65
 
