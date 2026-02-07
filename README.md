@@ -5,11 +5,9 @@ Project ini adalah sebuah **Web-based News Aggregator** yang memanfaatkan **Arti
 ---
 
 ## 👥 Anggota Kelompok
-| Nama | NIM |
-|Files |---|
-| Ricky Junianto Wijaya | 223400002 |
-| Petrus Maxmiliano | 223400003 |
-| Claudio Erlisto Juniarto | 223400012 |
+| Ricky Junianto Wijaya 223400002 |
+| Petrus Maxmiliano 223400003 |
+| Claudio Erlisto Juniarto 223400012 |
 
 ---
 
@@ -126,7 +124,7 @@ npm run dev
 ---
 
 ## 🌐 Deployment
-Project ini sudah berhasil dideploy menggunakan layanan **Railway**.
+Project ini sudah berhasil dideploy menggunakan layanan **Railway**. Jika server masih hidup.
 
 *   **Link Deploy**: _(Menyusul)_
 
@@ -151,5 +149,6 @@ project-root/
 
 ---
 
-## 🔗 Link & Validasi
+## 🔗 Validasi Masalah
 Project ini didasarkan pada riset dan validasi masalah melalui wawancara pengguna (Mahasiswa, Akademisi, Pembaca Umum). Bukti validasi dan transkrip wawancara tersimpan dalam dokumentasi internal tim.
+
