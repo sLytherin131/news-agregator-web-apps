@@ -49,7 +49,7 @@ Inti kecerdasan aplikasi ini menggunakan kombinasi model NLP modern:
     *   **Fungsi**: Mengklasifikasikan teks berita menjadi Oposisi, Netral, atau Pro Pemerintah.
 
 2.  **Topic Clustering (Pengelompokan Berita)**
-    *   **Model**: `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`.
+    *   **Model**: `sentence-transformers/paraphrase-multilingual-mpnet-base-v2`.
     *   **Metode**: Menghasilkan *vector embeddings* dari judul & konten berita, lalu menggunakan *Cosine Similarity* untuk mengelompokkan berita ke dalam "Issue" yang sama secara real-time.
 
 3.  **Summarization & Generative Comparison**
@@ -151,4 +151,5 @@ project-root/
 
 ## 🔗 Validasi Masalah
 Project ini didasarkan pada riset dan validasi masalah melalui wawancara pengguna (Mahasiswa, Akademisi, Pembaca Umum). Bukti validasi dan transkrip wawancara tersimpan dalam dokumentasi internal tim.
+
 
