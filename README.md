@@ -126,7 +126,7 @@ npm run dev
 ## 🌐 Deployment
 Project ini sudah berhasil dideploy menggunakan layanan **Railway**. Jika server masih hidup.
 
-*   **Link Deploy**: _(Menyusul)_
+*   **Link Deploy**: https://drive.google.com/file/d/11E_TS5uEt02i6TyuRli48ffgeQ--DDqv/view?usp=sharing 
 
 ---
 
@@ -151,5 +151,6 @@ project-root/
 
 ## 🔗 Validasi Masalah
 Project ini didasarkan pada riset dan validasi masalah melalui wawancara pengguna (Mahasiswa, Akademisi, Pembaca Umum). Bukti validasi dan transkrip wawancara tersimpan dalam dokumentasi internal tim.
+
 
 
